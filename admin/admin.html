@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin – Dakar Elite VTC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar" id="adminSidebar">
+        <div class="sidebar-logo">
+            <span class="logo-icon">◆</span>
+            <span class="logo-text">DAKAR<span class="logo-accent">ELITE</span> VTC</span>
+        </div>
+        <div class="sidebar-badge">Panneau d'Administration</div>
+        <nav class="sidebar-nav">
+            <p class="nav-section-label">Principal</p>
+            <a href="admin.html" class="sidebar-link active"><i class="fas fa-gauge-high"></i> Tableau de Bord</a>
+            <a href="bookings.html" class="sidebar-link"><i class="fas fa-calendar-check"></i> Réservations <span
+                    class="badge-pill" id="pendingBadge">…</span></a>
+            <p class="nav-section-label">Contenu</p>
+            <a href="settings.html" class="sidebar-link"><i class="fas fa-gear"></i> Paramètres</a>
+            <p class="nav-section-label">Accès rapide</p>
+            <a href="../index.html" class="sidebar-link" target="_blank"><i class="fas fa-globe"></i> Voir le Site</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-avatar" id="userAvatar">M</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">…</div>
+                    <div class="sidebar-user-role">Administrateur</div>
+                </div>
+                <button class="sidebar-user-btn" id="logoutBtn" title="Déconnexion"><i
+                        class="fas fa-arrow-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="top-header">
+            <button class="header-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+            <div class="header-breadcrumb">
+                <span>Admin</span><span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">Tableau de Bord</span>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="notifBtn" title="Réservations en attente"><i
+                        class="fas fa-bell"></i><span class="header-notif-dot" id="notifDot"
+                        style="display:none"></span></button>
+                <a href="../index.html" class="header-visit-btn" target="_blank"><i class="fas fa-eye"></i><span>Voir le
+                        site</span></a>
+            </div>
+        </header>
+
+        <main class="page-body">
+            <div class="page-title-wrap">
+                <h1 class="page-title">Tableau de <span>Bord</span></h1>
+                <p class="page-subtitle" id="dashDate">Dakar Elite VTC</p>
+            </div>
+
+            <!-- STAT CARDS -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-icon-wrap gold"><i class="fas fa-spinner fa-spin"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value">…</div>
+                        <div class="stat-label">Chargement…</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRID -->
+            <div class="dash-grid">
+                <!-- RECENT BOOKINGS -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <span class="section-card-title"><i class="fas fa-list-check"></i>Dernières Réservations</span>
+                        <a href="bookings.html" class="btn-sm btn-ghost"><i class="fas fa-arrow-right"></i> Toutes</a>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTbody">
+                                <tr>
+                                    <td colspan="5" class="empty-state"><i class="fas fa-spinner fa-spin"></i>
+                                        <p>Chargement…</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PERFORMANCE + ACTIVITY -->
+                <div class="section-card">
+                    <div class="section-card-header"><span class="section-card-title"><i
+                                class="fas fa-chart-bar"></i>Performance Services</span></div>
+                    <div class="perf-list" id="perfList">
+                        <p style="padding:20px;color:var(--text-muted);font-size:.85rem">Chargement…</p>
+                    </div>
+                    <div class="section-card-header" style="margin-top:4px;"><span class="section-card-title"><i
+                                class="fas fa-bolt"></i>Activité Récente</span></div>
+                    <div class="activity-list" id="activityList"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        /* ── AUTH CHECK ── */
+        async function checkAuth() {
+            const res = await fetch('/api/auth/status', { credentials: 'include' });
+            const data = await res.json();
+            if (!data.authenticated) { window.location.href = 'login.html'; return; }
+            document.getElementById('userName').textContent = data.username || 'Admin';
+            document.getElementById('userAvatar').textContent = (data.username || 'A')[0].toUpperCase();
+        }
+
+        /* ── LOGOUT ── */
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+            window.location.href = 'login.html';
+        });
+
+        /* ── LOAD STATS ── */
+        async function loadDashboard() {
+            const [statsRes] = await Promise.all([
+                fetch('/api/bookings/stats', { credentials: 'include' }),
+            ]);
+            const stats = await statsRes.json();
+
+            // Date
+            document.getElementById('dashDate').textContent =
+                'Vue d\'ensemble – Dakar Elite VTC • ' + new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+            // Pending badge in sidebar
+            document.getElementById('pendingBadge').textContent = stats.pending;
+            if (stats.pending > 0) document.getElementById('notifDot').style.display = '';
+
+            // Stat cards
+            const grid = document.getElementById('statsGrid');
+            grid.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-icon-wrap gold"><i class="fas fa-calendar-check"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" data-target="${stats.total}">0</div>
+            <div class="stat-label">Total Réservations</div>
+            <div class="stat-change up"><i class="fas fa-chart-line"></i> Depuis le début</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap orange"><i class="fas fa-inbox"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" data-target="${stats.pending}">0</div>
+            <div class="stat-label">En Attente</div>
+            <div class="stat-change ${stats.pending > 0 ? 'up' : ''}"><i class="fas fa-clock"></i> À confirmer</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap green"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" data-target="${stats.confirmed}">0</div>
+            <div class="stat-label">Confirmées</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap blue"><i class="fas fa-flag-checkered"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" data-target="${stats.done}">0</div>
+            <div class="stat-label">Terminées</div>
+          </div>
+        </div>`;
+
+            // Animate counters
+            grid.querySelectorAll('[data-target]').forEach(el => {
+                const target = parseInt(el.dataset.target);
+                let current = 0;
+                const step = Math.max(1, Math.ceil(target / 40));
+                if (target === 0) { el.textContent = '0'; return; }
+                const timer = setInterval(() => {
+                    current = Math.min(current + step, target);
+                    el.textContent = current;
+                    if (current >= target) clearInterval(timer);
+                }, 30);
+            });
+
+            // Performance bars
+            const total = stats.total || 1;
+            const perfList = document.getElementById('perfList');
+            const SERVICE_LABELS = { airport: 'Transfert Aéroport', business: "Voyage d'Affaires", tourism: 'Tour Touristique', concierge: 'Conciergerie', disposal: 'Mise à Disposition', longdist: 'Longue Distance' };
+            perfList.innerHTML = (stats.byService || []).map(s => {
+                const pct = Math.round((s.n / total) * 100);
+                return `<div class="perf-item">
+          <div class="perf-header"><span class="perf-label">${SERVICE_LABELS[s.service] || s.service}</span><span class="perf-value">${pct}%</span></div>
+          <div class="perf-bar-bg"><div class="perf-bar" data-width="${pct}%"></div></div>
+        </div>`;
+            }).join('') || '<p style="padding:16px;color:var(--text-muted);font-size:.85rem">Aucune donnée.</p>';
+
+            // Animate perf bars
+            requestAnimationFrame(() => {
+                perfList.querySelectorAll('.perf-bar').forEach(b => {
+                    b.style.width = '0%';
+                    setTimeout(() => { b.style.transition = 'width 1s ease'; b.style.width = b.dataset.width; }, 100);
+                });
+            });
+
+            // Recent bookings table
+            const STATUS_MAP = {
+                pending: '<span class="badge badge-pending"><span class="badge-dot-sm"></span>En attente</span>',
+                confirmed: '<span class="badge badge-confirmed"><span class="badge-dot-sm"></span>Confirmée</span>',
+                done: '<span class="badge badge-done"><span class="badge-dot-sm"></span>Terminée</span>',
+                cancelled: '<span class="badge badge-cancelled"><span class="badge-dot-sm"></span>Annulée</span>',
+            };
+            const tbody = document.getElementById('recentTbody');
+            tbody.innerHTML = (stats.recent || []).map(b => `
+        <tr>
+          <td><strong>${b.first_name} ${b.last_name}</strong></td>
+          <td>${SERVICE_LABELS[b.service] || b.service}</td>
+          <td class="td-muted">${b.created_at ? b.created_at.split(' ')[0] : '—'}</td>
+          <td>${STATUS_MAP[b.status] || b.status}</td>
+          <td><a href="bookings.html" class="action-btn view" title="Gérer"><i class="fas fa-arrow-right"></i></a></td>
+        </tr>`).join('') || `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-inbox"></i><p>Aucune réservation.</p></div></td></tr>`;
+
+            // Activity feed
+            const activityList = document.getElementById('activityList');
+            const icons = { pending: 'gold fa-calendar-plus', confirmed: 'green fa-check', done: 'blue fa-flag-checkered', cancelled: 'red fa-xmark' };
+            const labels = { pending: 'Nouvelle demande', confirmed: 'Réservation confirmée', done: 'Course terminée', cancelled: 'Réservation annulée' };
+            activityList.innerHTML = (stats.recent || []).map(b => {
+                const [cls, ico] = (icons[b.status] || 'gold fa-calendar').split(' ');
+                return `<div class="activity-item">
+          <div class="activity-icon ${cls}"><i class="fas ${ico}"></i></div>
+          <div class="activity-body">
+            <div class="activity-text">${labels[b.status] || b.status} – <strong>${b.first_name} ${b.last_name}</strong></div>
+            <div class="activity-time">${b.created_at || ''}</div>
+          </div>
+        </div>`;
+            }).join('') || '<div style="padding:16px;color:var(--text-muted);font-size:.85rem">Aucune activité récente.</div>';
+        }
+
+        /* ── NOTIF BUTTON ── */
+        document.getElementById('notifBtn').addEventListener('click', () => {
+            window.location.href = 'bookings.html?status=pending';
+        });
+
+        /* ── INIT ── */
+        checkAuth().then(loadDashboard);
+    </script>
+</body>
+
+</html>

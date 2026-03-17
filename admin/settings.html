@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paramètres – Admin Dakar Elite VTC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar" id="adminSidebar">
+        <div class="sidebar-logo">
+            <span class="logo-icon">◆</span>
+            <span class="logo-text">DAKAR<span class="logo-accent">ELITE</span> VTC</span>
+        </div>
+        <div class="sidebar-badge">Panneau d'Administration</div>
+        <nav class="sidebar-nav">
+            <p class="nav-section-label">Principal</p>
+            <a href="admin.html" class="sidebar-link"><i class="fas fa-gauge-high"></i> Tableau de Bord</a>
+            <a href="bookings.html" class="sidebar-link"><i class="fas fa-calendar-check"></i> Réservations <span
+                    class="badge-pill" id="pendingBadge">…</span></a>
+            <p class="nav-section-label">Contenu</p>
+            <a href="settings.html" class="sidebar-link active"><i class="fas fa-gear"></i> Paramètres</a>
+            <p class="nav-section-label">Accès rapide</p>
+            <a href="../index.html" class="sidebar-link" target="_blank"><i class="fas fa-globe"></i> Voir le Site</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-avatar" id="userAvatar">M</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">…</div>
+                    <div class="sidebar-user-role">Administrateur</div>
+                </div>
+                <button class="sidebar-user-btn" id="logoutBtn" title="Déconnexion"><i
+                        class="fas fa-arrow-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="top-header">
+            <button class="header-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+            <div class="header-breadcrumb">
+                <span>Admin</span><span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">Paramètres</span>
+            </div>
+            <div class="header-actions">
+                <a href="../index.html" class="header-visit-btn" target="_blank"><i class="fas fa-eye"></i><span>Voir le
+                        site</span></a>
+            </div>
+        </header>
+
+        <main class="page-body">
+            <div class="page-title-wrap">
+                <h1 class="page-title">Paramètres du <span>Site</span></h1>
+                <p class="page-subtitle">Gérez les informations de contact, les tarifs et les préférences.</p>
+            </div>
+
+            <form id="settingsForm">
+                <div class="section-card" style="margin-bottom:20px;">
+                    <div class="section-card-header"><span class="section-card-title"><i
+                                class="fas fa-address-card"></i>Informations de Contact</span></div>
+                    <p class="settings-section-title"><i class="fas fa-user"></i> Coordonnées Publiques</p>
+                    <div class="settings-grid">
+                        <div class="form-group"><label class="form-label">Nom du Chauffeur</label><input type="text"
+                                name="driver_name" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Nom de l'Entreprise</label><input type="text"
+                                name="company_name" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Téléphone / WhatsApp</label><input type="tel"
+                                name="phone" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Email de Contact</label><input type="email"
+                                name="email" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Zone de Service</label><input type="text"
+                                name="service_zone" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Lien WhatsApp</label><input type="url"
+                                name="whatsapp_link" class="form-control" /></div>
+                    </div>
+                </div>
+
+                <div class="section-card" style="margin-bottom:20px;">
+                    <div class="section-card-header"><span class="section-card-title"><i
+                                class="fas fa-tags"></i>Services & Tarifs</span></div>
+                    <div class="settings-grid">
+                        <div class="form-group"><label class="form-label">Nom du Véhicule</label><input type="text"
+                                name="vehicle_name" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Capacité Maximale</label><input type="number"
+                                name="vehicle_capacity" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Délai Confirmation (min)</label><input
+                                type="number" name="confirm_delay" class="form-control" /></div>
+                        <div class="form-group"><label class="form-label">Clients Satisfaits (stat)</label><input
+                                type="number" name="clients_count" class="form-control" /></div>
+                    </div>
+                </div>
+
+                <div class="section-card" style="margin-bottom:20px;">
+                    <div class="section-card-header"><span class="section-card-title"><i
+                                class="fas fa-sliders"></i>Préférences & Visibilité</span></div>
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <div class="toggle-name">Bouton WhatsApp flottant</div>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" name="pref_whatsapp_btn" /><span
+                                class="toggle-track"></span></label>
+                    </div>
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <div class="toggle-name">Mode "Disponible"</div>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" name="pref_available" /><span
+                                class="toggle-track"></span></label>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:12px; padding-bottom:40px;">
+                    <button type="submit" class="btn-lg btn-gold"><i class="fas fa-save"></i> Enregistrer les
+                        modifications</button>
+                </div>
+            </form>
+
+            <div class="section-card" style="margin-bottom:20px; border-color: rgba(231,76,60,0.3)">
+                <div class="section-card-header"><span class="section-card-title" style="color:var(--danger)"><i
+                            class="fas fa-lock"></i>Sécurité</span></div>
+                <div class="settings-grid">
+                    <form id="passwordForm" style="display:contents">
+                        <div class="form-group"><label class="form-label">Mot de passe actuel</label><input
+                                type="password" id="currPass" class="form-control" required /></div>
+                        <div class="form-group"><label class="form-label">Nouveau mot de passe</label><input
+                                type="password" id="newPass" class="form-control" required minlength="6" /></div>
+                        <div class="form-group" style="justify-content:flex-end; display:flex; align-items:flex-end">
+                            <button type="submit" class="btn-sm btn-danger-sm">Changer le mot de passe</button></div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        async function checkAuth() {
+            const res = await fetch('/api/auth/status', { credentials: 'include' });
+            const data = await res.json();
+            if (!data.authenticated) { window.location.href = 'login.html'; return; }
+            document.getElementById('userName').textContent = data.username || 'Admin';
+            document.getElementById('userAvatar').textContent = (data.username || 'A')[0].toUpperCase();
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+            window.location.href = 'login.html';
+        });
+
+        async function loadSettings() {
+            const res = await fetch('/api/settings');
+            const settings = await res.json();
+
+            const form = document.getElementById('settingsForm');
+            for (const [key, value] of Object.entries(settings)) {
+                const input = form.elements[key];
+                if (input) {
+                    if (input.type === 'checkbox') input.checked = value === 'true';
+                    else input.value = value;
+                }
+            }
+
+            const statsRes = await fetch('/api/bookings/stats', { credentials: 'include' });
+            const stats = await statsRes.json();
+            document.getElementById('pendingBadge').textContent = stats.pending;
+        }
+
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {};
+
+            // Handle checkboxes explicitly
+            const inputs = e.target.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') data[input.name] = input.checked ? 'true' : 'false';
+                else if (input.name) data[input.name] = input.value;
+            });
+
+            const res = await fetch('/api/settings', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+
+            if (res.ok) showToast('Paramètres enregistrés', 'success');
+            else showToast('Erreur lors de la sauvegarde', 'error');
+        });
+
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('currPass').value;
+            const newPassword = document.getElementById('newPass').value;
+
+            const res = await fetch('/api/auth/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ currentPassword, newPassword }),
+                credentials: 'include'
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                showToast('Mot de passe modifié', 'success');
+                e.target.reset();
+            } else {
+                showToast(data.error || 'Erreur', 'error');
+            }
+        });
+
+        checkAuth().then(loadSettings);
+    </script>
+</body>
+
+</html>
